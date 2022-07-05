@@ -1,185 +1,64 @@
-# wp-attach-dev
+# EISHIN's Coding Set for WordPress
+本リポジトリを使用することでよりスムーズにコーディングができます。
 
-## これはなに？
+## このコーディングセットを使用してできること
+- Dart Sassをcssにコンパイルし、Minifyすることができます。
+- Babelを使用してJavaScriptをES5程度までトランスパイルできます。
+- BrowserSyncを使用して、ローカル環境を立てることができ、監視対象のファイルをいじると自動リロードされます。
+- WebPackを使用してJavaScriptファイルの依存関係を解消し、少ないファイル数にバンドルすることができます。
+- 画像ファイルを圧縮することができます。
 
-WordPressのテーマ開発をすばやくやるためのボイラープレートです
+## 主な使用ツールについて
+- [Node.js](https://nodejs.org/ja/)
+- [npm](https://docs.npmjs.com/about-npm)
+- [yarn](https://classic.yarnpkg.com/lang/en)
+- [webpack5](https://webpack.js.org/concepts/)
 
-### 方針
+## 使用方法
+以降はmacOSを使用したインストール方法になります。<br>
+1. [Node.js](https://nodejs.org/ja/)のLTS版をインストールします。インストーラーの指示に従って進んでいけば大丈夫です。
+2. Node.jsがインストールできたらターミナルで `npm install --g yarn
+`を実行します。yarnがインストールできます。
+3. yarnがインストールできたら、Local by Flywheelで開発していくWordpressフォルダを立ち上げ、そこのトップレベルへ本リポジトリを `git clone` でローカル環境に複製します。（リポジトリのクローンについては[こちら](https://docs.github.com/ja/repositories/creating-and-managing-repositories/cloning-a-repository)）
 
-#### テーマファイルは同梱していない構成です
+## webpackの設定について
+### webpackで最初に設定すること
+1. webpack.config.jsファイルに行きます。
+2. `let DIRBASE`をコメントに従って設定します
+3. `projectJs`オブジェクト内で`entry`を指示に従って編集しましょう。
+4. 以上です。
+### 基本的なwebpack実行コマンド
+一通り下記コマンドを実行してみましょう。
+ビルドしたファイルは`developThemeName`で設定したフォルダ配下に`assets`フォルダとしてビルドされます。また
+<table style='width: 100%;'>
+  <tr>
+    <th>実行したい内容</th>
+    <th>実行コマンド</th>
+  </tr>
+  <tr>
+    <td>開発用にビルド＆ローカルサーバーを立てる</td>
+    <td>yarn run dev</td>
+  </tr>
+  <tr>
+    <td>商用にビルド</td>
+    <td>yarn run build</td>
+  </tr>
+  <tr>
+    <td>商用にビルドしてローカルサーバーを立てる</td>
+    <td>yarn run build:server</td>
+  </tr>
+  <tr>
+    <td>開発用にビルドする</td>
+    <td>yarn run webpack:dev</td>
+  </tr>
+</table>
 
-* テーマ開発スターターキット(_sのようなテーマ)や既存のテーマやDLしてきたテーマなどと組み合わせて使います
-  - これらテーマを骨組み的な役割として扱います
-
-#### アタッチメントの思想でアセット類は上書きベースで開発します
-
-* phpファイル自体は上記の既存テーマやスターターキットテーマを利用
-* 骨組みのテーマのスタイルなどはいじらず、アセット類(css/js/images)は本リポジトリのものを使用
-  - 開発テーマフォルダ内にアセットが吐き出されるので、これらを使うようにします
-
-#### 生成されるアセット類の使いかたに関して
-
-* WPでなにかしらをして読めるようにする
-  * テーマの<head>タグで愚直に読み込みするとか
-  * functions.phpからwp_enque_scriptするとか
-
-### 構成
-
-#### devDependencies
-  * gulp
-  * browsersync
-  * sass
-  * babel
-  * webpack
-  * eslint
-
-
-#### dependencies
-  * bourbon
-  * neat
-  * gsap
-  * imagesloaded
-  * jquery
-  * minireset.css
-  * modernizr
-  * webfontloader
-
-
-### 動作環境
-
-* node: "^7.4.0"
-
-**Vagrant+[VCCW](http://vccw.cc/)や[Local by Flywheel](https://local.getflywheel.com/)のような仮想開発環境がおすすめです。**
-
-
-## ディレクトリ構成
-
-```
-.
-├── build // ⭐️ このフォルダが実際に触っていくフォルダです
-│   └── customizingAssets
-│       ├── css ← 生のCSSを使いたい場合はここへ
-│       ├── images ← 画像はここへ
-│       ├── js ← JavaScriptのファイル群
-│       ├── sass ← Sassのファイル群
-│       └── simpleCopyFiles ← なにか単純にテーマフォルダ内にコピーしたいファイルがある場合はここへ
-├── configs
-│   ├── dirSets.js ← ⭐️ フォルダ構成の設定ファイルです
-│   ├── webpack-common.config.babel.js ← webpackの共通部分の設定ファイル
-│   ├── webpack-dev.config.babel.js ← webpackの開発時用の設定ファイル
-│   └── webpack-production.config.babel.js ← webpackのリリース時用の設定ファイル
-├── gulpfile.babel.js ← gulpのタスク設定ファイル
-├── package.json
-├── readme.md ← 今読んでるこの文書のファイル
-└── yarn.lock
-```
+### webpack内で使用しているツール
+下記はwebpack内で使用している主なツールです。各ツールごとにさまざまな設定ができますが、ここでは割愛します。
+- [Babel](https://babeljs.io/)
+- [ESLint](https://eslint.org/)
 
 
-## 開発前にやること
-
-> ※例としてLocal by Flywheel想定の手順です
-
-### 1.ローカル開発環境をプロビジョニングする
-* WordPressの管理画面にログインできて、Twenty◯◯のテーマが表示できている状態
-
-### 2.プロビジョニングしたローカルマシンのルートディレクトリへターミナルへ`cd`する
-* Local by flywheelならディレクトリの感じ、だいたいこんな感じなはず
-	* ~/Local Sites/ローカルサイト名
-
-```
-$ cd ~/Local Sites/ローカルサイト名
-```
-
-### 3.git cloneする
-
-```
-$ git clone https://github.com/1natsu172/wp-attach-dev.git
-$ cd wp-attach-dev
-```
-
-### 4.node_modulesをインストール
-
-```
-$ yarn install
-```
-> yarn入ってないなら`npm install`でもOK
-
-### 5. `/configs/dirSets.js`を開いてパスの変更
-
-基本的に`let DIRBASE`オブジェクトの以下のみ変更でOKなはず
-
-* DIRBASE.domain
-* DIRBASE.wordpressThemesFolder
-* DIRBASE.developThemeName
-
-> コメント書いてあるので適宜変更してください
-
-### 6.開発前段階はこれで終わり 👍🏻
-
-
-## 開発していきましょう
-
-### 開発時
-
-```
-$ npm run dev
-```
-
-### 開発時(ESLintモード:ESLintしながら開発するとき)
-
-```
-$ npm run dev:lint
-```
-
-### リリース時
-
-```
-$ npm run production
-```
-> 開発時のcustomizedAssetsをproductionの処理をかけたもので上書き出力する仕様になっています
-
-#### うまくいけそうか確認しましょう
-
-テーマファイルのなんらかの.phpファイルを編集して保存(`⌘+S`)すれば自動でリロードされてWPテーマ開発を進められるはずです！🌟
-
-Finder(エクスプローラ)でテーマフォルダを見るとcustomizedAssetsフォルダができていると思います。各自読み込んで開発しましょう！🌟
-
-***
-
-# ちなみに
-
-## wp-attach-devで生成したJSをfunctions.phpからdefer付与して読み込みたいときのコードスニペット
-
-```
-// script読むファンクション
-function customized_scripts() {
-  wp_enqueue_script( 'customized_script', get_stylesheet_directory_uri() . '/customizedAssets/js/scripts.js');
-}
-add_action( 'wp_enqueue_scripts', 'customized_scripts' );
-
-// scriptタグにdeferつけるファンクション
-function add_defer_attribute($tag, $handle) {
-   // add script handles to the array below
-   // 複数のwp_enqueにdeferしたいならarrayに該当の$handleを足す
-   $scripts_to_defer = array('customized_script');
-
-   foreach($scripts_to_defer as $defer_script) {
-      if ($defer_script === $handle) {
-         return str_replace(' src', ' defer src', $tag);
-      }
-   }
-   return $tag;
-}
-add_filter('script_loader_tag', 'add_defer_attribute', 10, 2);
-```
-
-> deferがついた`<script>`タグが出力されて便利
-
-## ちなみにプロジェクトまるごとgit管理するなら
-
-ここにgitignore用意してあるので使いましょう
-
-* [https://gist.github.com/1natsu172/f4e22ec1aa408cff5cf29327abee14a0](https://gist.github.com/1natsu172/f4e22ec1aa408cff5cf29327abee14a0)
-
-> (たいていの場合`git clone`したディレクトリに置くことになります)
-> (Local by Flywheelなら`~/Local Sites/ローカルサイト名`直下に置く)
+## License
+License: [MIT License](https://opensource.org/licenses/MIT)<br>
+Contributors: KenyaMasuko
