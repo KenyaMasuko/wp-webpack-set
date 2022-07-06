@@ -4,12 +4,13 @@
  *
  * @since 1.1.0
  */
-const magicImporter = require('node-sass-magic-importer') // Add magic import functionalities to SASS
-const MiniCssExtractPlugin = require('mini-css-extract-plugin') // Extracts the CSS files into public/css
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin') // Synchronising URLs, interactions and code changes across devices
-const WebpackBar = require('webpackbar') // Display elegant progress bar while building or watch
-const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin') // To optimize (compress) all images using
-const CopyPlugin = require('copy-webpack-plugin') // For WordPress we need to copy images from src to public to optimize them
+const path = require("path");
+const magicImporter = require("node-sass-magic-importer"); // Add magic import functionalities to SASS
+const MiniCssExtractPlugin = require("mini-css-extract-plugin"); // Extracts the CSS files into public/css
+const BrowserSyncPlugin = require("browser-sync-webpack-plugin"); // Synchronising URLs, interactions and code changes across devices
+const WebpackBar = require("webpackbar"); // Display elegant progress bar while building or watch
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin"); // To optimize (compress) all images using
+const CopyPlugin = require("copy-webpack-plugin"); // For WordPress we need to copy images from src to public to optimize them
 
 module.exports = (projectOptions) => {
   /**
@@ -17,30 +18,30 @@ module.exports = (projectOptions) => {
    */
   const cssRules = {
     test:
-      projectOptions.projectCss.use === 'sass'
+      projectOptions.projectCss.use === "sass"
         ? projectOptions.projectCss.rules.sass.test
         : projectOptions.projectCss.rules.postcss.test,
     exclude: /(node_modules|bower_components|vendor)/,
     use: [
       MiniCssExtractPlugin.loader, // Creates `style` nodes from JS strings
-      'css-loader', // Translates CSS into CommonJS
+      "css-loader", // Translates CSS into CommonJS
       {
         // loads the PostCSS loader
-        loader: 'postcss-loader',
+        loader: "postcss-loader",
         options: require(projectOptions.projectCss.postCss)(projectOptions),
       },
     ],
-  }
+  };
 
-  if (projectOptions.projectCss.use === 'sass') {
+  if (projectOptions.projectCss.use === "sass") {
     // if chosen Sass then we're going to add the Sass loader
     cssRules.use.push({
       // Compiles Sass to CSS
-      loader: 'sass-loader',
+      loader: "sass-loader",
       options: {
         sassOptions: { importer: magicImporter() }, // add magic import functionalities to sass
       },
-    })
+    });
   }
 
   /**
@@ -50,25 +51,33 @@ module.exports = (projectOptions) => {
     test: projectOptions.projectJs.rules.test,
     include: projectOptions.projectJsPath,
     exclude: /(node_modules|bower_components|vendor)/,
-    use: 'babel-loader', // Configurations in "webpack/babel.config.js"
-  }
+    use: "babel-loader", // Configurations in "webpack/babel.config.js"
+  };
 
   /**
    * Images rules
    */
+  // const imageRules = {
+  //   test: projectOptions.projectImages.rules.test,
+  //   use: [
+  //     {
+  //       loader: 'file-loader', // Or `url-loader` or your other loader
+  //     },
+  //   ],
+  // }
+
   const imageRules = {
-    test: projectOptions.projectImages.rules.test,
-    use: [
-      {
-        loader: 'file-loader', // Or `url-loader` or your other loader
-      },
-    ],
-  }
+    // test: /\.(jpe?g|gif|png|svg|woff2?|ttf|eot|mp4|mov)$/,
+    // type: "asset/resource",
+    // generator: {
+    //   filename: `./images/[name].[ext]`,
+    // },
+  };
 
   /**
    * Optimization rules
    */
-  const optimizations = {}
+  const optimizations = {};
 
   /**
    * Plugins
@@ -86,36 +95,59 @@ module.exports = (projectOptions) => {
       patterns: [
         {
           from: projectOptions.projectImagesPath,
-          to: projectOptions.projectOutput + '/images',
+          to: projectOptions.projectOutput + "/images",
         },
       ],
     }),
     new ImageMinimizerPlugin({
       // Optimizes images
-      minimizerOptions: projectOptions.projectImages.minimizerOptions,
+      minimizer: {
+        implementation: ImageMinimizerPlugin.imageminMinify,
+        options: {
+          // Lossless optimization with custom option
+          // Feel free to experiment with options for better result for you
+          // More info here: https://webpack.js.org/plugins/image-minimizer-webpack-plugin/
+          plugins: [
+            ["gifsicle", { interlaced: true }],
+            ["jpegtran", { progressive: true }],
+            ["optipng", { optimizationLevel: 5 }],
+            [
+              "svgo",
+              {
+                plugins: [{ removeViewBox: false }],
+              },
+            ],
+          ],
+        },
+      },
     }),
-  ]
+  ];
+  const resolve = {
+    alias: {
+      "@image": path.join(__dirname, "./src/assets/images/"),
+    },
+  };
   // Add browserSync to plugins if enabled
   if (projectOptions.browserSync.enable === true) {
     const browserSyncOptions = {
       files: projectOptions.browserSync.files,
       host: projectOptions.browserSync.host,
       port: projectOptions.browserSync.port,
-    }
-    if (projectOptions.browserSync.mode === 'server') {
+    };
+    if (projectOptions.browserSync.mode === "server") {
       Object.assign(browserSyncOptions, {
         server: projectOptions.browserSync.server,
-      })
+      });
     } else {
       Object.assign(browserSyncOptions, {
         proxy: projectOptions.browserSync.proxy,
-      })
+      });
     }
     plugins.push(
       new BrowserSyncPlugin(browserSyncOptions, {
         reload: projectOptions.browserSync.reload,
       })
-    )
+    );
   }
 
   return {
@@ -124,5 +156,6 @@ module.exports = (projectOptions) => {
     imageRules: imageRules,
     optimizations: optimizations,
     plugins: plugins,
-  }
-}
+    resolve: resolve,
+  };
+};

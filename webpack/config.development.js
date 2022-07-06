@@ -6,16 +6,16 @@
  * @since 1.0.0
  */
 
-const ESLintPlugin = require('eslint-webpack-plugin') //  Find and fix problems in your JavaScript code
-const StylelintPlugin = require('stylelint-webpack-plugin') // Helps you avoid errors and enforce conventions in your styles
+const ESLintPlugin = require("eslint-webpack-plugin"); //  Find and fix problems in your JavaScript code
+const StylelintPlugin = require("stylelint-webpack-plugin"); // Helps you avoid errors and enforce conventions in your styles
 
 module.exports = (projectOptions) => {
-  process.env.NODE_ENV = 'development' // Set environment level to 'development'
+  process.env.NODE_ENV = "development"; // Set environment level to 'development'
 
   /**
    * The base skeleton
    */
-  const Base = require('./config.base')(projectOptions)
+  const Base = require("./config.base")(projectOptions);
 
   /**
    * CSS rules
@@ -25,7 +25,7 @@ module.exports = (projectOptions) => {
     ...{
       // add CSS rules for development here
     },
-  }
+  };
 
   /**
    * JS rules
@@ -35,7 +35,7 @@ module.exports = (projectOptions) => {
     ...{
       // add JS rules for development here
     },
-  }
+  };
 
   /**
    * Image rules
@@ -45,7 +45,7 @@ module.exports = (projectOptions) => {
     ...{
       // add image rules for development here
     },
-  }
+  };
 
   /**
    * Optimizations rules
@@ -55,7 +55,7 @@ module.exports = (projectOptions) => {
     ...{
       // add optimizations rules for development here
     },
-  }
+  };
 
   /**
    * Plugins
@@ -65,33 +65,34 @@ module.exports = (projectOptions) => {
     ...[
       // add plugins for development here
     ],
-  ]
+  ];
   // Add eslint to plugins if enabled
   if (projectOptions.projectJs.eslint === true) {
-    plugins.push(new ESLintPlugin())
+    plugins.push(new ESLintPlugin());
   }
   // Add stylelint to plugins if enabled
-  if (projectOptions.projectJs.eslint === true) {
-    plugins.push(new StylelintPlugin())
+
+  if (projectOptions.projectCss.stylelint === true) {
+    plugins.push(new StylelintPlugin());
   }
 
   /***
    * Add sourcemap for development if enabled
    */
-  const sourceMap = { devtool: false }
+  const sourceMap = { devtool: false };
   if (
     projectOptions.projectSourceMaps.enable === true &&
-    (projectOptions.projectSourceMaps.env === 'dev' ||
-      projectOptions.projectSourceMaps.env === 'dev-prod')
+    (projectOptions.projectSourceMaps.env === "dev" ||
+      projectOptions.projectSourceMaps.env === "dev-prod")
   ) {
-    sourceMap.devtool = projectOptions.projectSourceMaps.devtool
+    sourceMap.devtool = projectOptions.projectSourceMaps.devtool;
   }
 
   /**
    * The configuration that's being returned to Webpack
    */
   return {
-    mode: 'development',
+    mode: "development",
     entry: projectOptions.projectJs.entry, // Define the starting point of the application.
     output: {
       path: projectOptions.projectOutput,
@@ -101,5 +102,5 @@ module.exports = (projectOptions) => {
     optimization: optimizations,
     module: { rules: [cssRules, jsRules, imageRules] },
     plugins: plugins,
-  }
-}
+  };
+};
