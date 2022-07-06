@@ -57,7 +57,7 @@ const projectFiles = {
   // CSS configurations for development and production
   projectCss: {
     postCss: projectPaths.projectWebpack + "/postcss.config.js",
-    // stylelintの設定がかなりめんどくさいので、とりあえずはstylelintをｔ
+    // stylelintの設定がかなりめんどくさいので、とりあえずはstylelintをfalseにする
     stylelint: false, // enable or disable stylelint | this is only enabled in development env.
     filename: "css/style.css",
     use: "sass", // sass || postcss
