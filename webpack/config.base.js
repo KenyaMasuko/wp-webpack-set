@@ -93,7 +93,7 @@ module.exports = (projectOptions) => {
     new ImageMinimizerPlugin({
       // Optimizes images
       minimizer: {
-        implementation: ImageMinimizerPlugin.imageminMinify,
+        implementation: ImageMinimizerPlugin.imageminGenerate,
         options: {
           // Lossless optimization with custom option
           // Feel free to experiment with options for better result for you
