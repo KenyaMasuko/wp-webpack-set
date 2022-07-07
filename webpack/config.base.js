@@ -57,21 +57,12 @@ module.exports = (projectOptions) => {
   /**
    * Images rules
    */
-  // const imageRules = {
-  //   test: projectOptions.projectImages.rules.test,
-  //   use: [
-  //     {
-  //       loader: 'file-loader', // Or `url-loader` or your other loader
-  //     },
-  //   ],
-  // }
-
   const imageRules = {
-    // test: /\.(jpe?g|gif|png|svg|woff2?|ttf|eot|mp4|mov)$/,
-    // type: "asset/resource",
-    // generator: {
-    //   filename: `./images/[name].[ext]`,
-    // },
+    test: projectOptions.projectImages.rules.test,
+    type: "asset/resource",
+    generator: {
+      filename: `./images/[name][ext]`,
+    },
   };
 
   /**
@@ -122,11 +113,6 @@ module.exports = (projectOptions) => {
       },
     }),
   ];
-  const resolve = {
-    alias: {
-      "@image": path.join(__dirname, "./src/assets/images/"),
-    },
-  };
   // Add browserSync to plugins if enabled
   if (projectOptions.browserSync.enable === true) {
     const browserSyncOptions = {
@@ -156,6 +142,5 @@ module.exports = (projectOptions) => {
     imageRules: imageRules,
     optimizations: optimizations,
     plugins: plugins,
-    resolve: resolve,
   };
 };
