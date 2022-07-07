@@ -15,24 +15,25 @@ module.exports = {
     jquery: true,
     amd: true,
   },
-  extends: 'eslint:recommended',
-  parser: '@babel/eslint-parser',
+  extends: "eslint:recommended",
+  parser: "@babel/eslint-parser",
   parserOptions: {
-    sourceType: 'module',
+    sourceType: "module",
     requireConfigFile: false,
   },
   rules: {
-    semi: ['error', 'always'],
+    semi: ["error", "always"],
+    "no-unused-vars": "off",
   },
   globals: {
-    wp: 'readonly',
-    jQuery: 'readonly',
-    $: 'readonly',
+    wp: "readonly",
+    jQuery: "readonly",
+    $: "readonly",
   },
   ignorePatterns: [
-    'tests/**/*.js',
-    'temp.js',
-    '/vendor/**/**/*.js',
-    '/node_modules/**/**/*.js',
+    "tests/**/*.js",
+    "temp.js",
+    "/vendor/**/**/*.js",
+    "/node_modules/**/**/*.js",
   ],
-}
+};
