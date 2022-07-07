@@ -85,8 +85,8 @@ module.exports = (projectOptions) => {
       // Copies images from src to public
       patterns: [
         {
-          from: projectOptions.projectImagesPath,
-          to: projectOptions.projectOutput + "/images",
+          from: `${projectOptions.projectImagesPath}`,
+          to: `${projectOptions.projectOutput}/images`,
         },
       ],
     }),
@@ -105,7 +105,12 @@ module.exports = (projectOptions) => {
             [
               "svgo",
               {
-                plugins: [{ removeViewBox: false }],
+                plugins: [
+                  {
+                    name: "removeViewBox",
+                    active: false,
+                  },
+                ],
               },
             ],
           ],
