@@ -6,7 +6,7 @@
 
 - Dart Sass を css にコンパイルし、Minify することができます。
 - Babel を使用して JavaScript を ES5 程度までトランスパイルできます。
-- BrowserSync を使用して、ローカル環境を立てることができ、監視対象のファイルをいじると自動リロードされます。
+- BrowserSync を使用して、ローカル環境を立てることができ、監視対象のファイルをいじると自動リロードされます。(ホットリロード)
 - WebPack を使用して JavaScript ファイルの依存関係を解消し、少ないファイル数にバンドルすることができます。
 - 画像ファイルを圧縮することができます。
 
@@ -26,15 +26,10 @@
 3. yarn がインストールできたら、Local by Flywheel で開発していく Wordpress フォルダを立ち上げ、そこのトップレベルへ本リポジトリを `git clone` でローカル環境に複製します。（リポジトリのクローンについては[こちら](https://docs.github.com/ja/repositories/creating-and-managing-repositories/cloning-a-repository)）
 4. Local のトップディレクトリにリポジトリを clone してディレクトリが `app conf logs wp-webpack-set`のようになったら、`cd wp-webpack-set`でカレントディレクトリを移動する。
 5. カレントディレクトリを移動できたら`yarn install`で必要なパッケージをインストールする。
-6. パッケージがインストールできたら`yarn run dev`を打ち込み、webpack のビルドが始まれば準備完了。（ステータスバーが出ます。）
+6. パッケージがインストールできたら`yarn list`を打ち込み、インストールしたパッケージが表示されれば大丈夫です。
+7. ローカルサーバーを立てるにあたり webpack の設定を少しいじる必要があるので、以降の指示を読んで進めてください。
 
 ## webpack の設定について
-
-### WordPress を使用しない通常の HTML ファイル用のコーディングセットとの違い
-
-- CSS,JS の読み込み<br>CSS と JS は自動で`link`,`script`が埋め込まれていましたが、本コーディングセットでは自分でパスを設定する必要があります。
-- JavaSript ファイルのビルド<br>JavaScript ファイルのビルドは読み込む php ファイル名と一致させる必要はありません。（理由は、自身でパスを設定する必要があるため）どの JavaScript ファイルをビルドするかは webpack.config.js を編集します。
-- WordPress のローカルサーバーを立てるために[Local](https://and-ha.com/coding/local-wordpress/)を使用します
 
 ### webpack で最初に設定すること
 
@@ -70,6 +65,12 @@
     <td>yarn run webpack:dev</td>
   </tr>
 </table>
+
+### WordPress を使用しない通常の HTML ファイル用のコーディングセットとの違い
+
+- CSS,JS の読み込み<br>CSS と JS は自動で`link`,`script`が埋め込まれていましたが、本コーディングセットでは自分でパスを設定する必要があります。
+- JavaSript ファイルのビルド<br>JavaScript ファイルのビルドは読み込む php ファイル名と一致させる必要はありません。（理由は、自身でパスを設定する必要があるため）どの JavaScript ファイルをビルドするかは webpack.config.js を編集します。
+- WordPress のローカルサーバーを立てるために[Local](https://and-ha.com/coding/local-wordpress/)を使用します
 
 ### webpack 内で使用しているツール
 
