@@ -24,6 +24,9 @@
 1. [Node.js](https://nodejs.org/ja/)の LTS 版をインストールします。インストーラーの指示に従って進んでいけば大丈夫です。
 2. Node.js がインストールできたらターミナルで `npm install --g yarn `を実行します。yarn がインストールできます。
 3. yarn がインストールできたら、Local by Flywheel で開発していく Wordpress フォルダを立ち上げ、そこのトップレベルへ本リポジトリを `git clone` でローカル環境に複製します。（リポジトリのクローンについては[こちら](https://docs.github.com/ja/repositories/creating-and-managing-repositories/cloning-a-repository)）
+4. Local のトップディレクトリにリポジトリを clone してディレクトリが `app conf logs wp-webpack-set`のようになったら、`cd wp-webpack-set`でカレントディレクトリを移動する。
+5. カレントディレクトリを移動できたら`yarn install`で必要なパッケージをインストールする。
+6. パッケージがインストールできたら`yarn run dev`を打ち込み、webpack のビルドが始まれば準備完了。（ステータスバーが出ます。）
 
 ## webpack の設定について
 
